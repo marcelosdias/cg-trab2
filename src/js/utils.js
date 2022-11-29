@@ -129,7 +129,7 @@ const updateScene = () => {
 
 const mapMoviments = (event) => {
   if (firstTime) {
-    const audio = new Audio("/src/sounds/tema.mp3");
+    const audio = new Audio("src/sounds/tema.mp3");
 
     audio.volume = 0.1
   
@@ -142,24 +142,24 @@ const mapMoviments = (event) => {
 
   if (event.code === 'ArrowRight') {
     if (config.translationX <= 32)
-      config.translationX += speedMoviment * 100
+      config.translationX += speedMoviment * 110
   }
   else if (event.code === 'ArrowLeft') {
     if (config.translationX >= -32)
-      config.translationX -= speedMoviment * 100
+      config.translationX -= speedMoviment * 110
   }
-  else if (event.code === 'ArrowUp')  {
-    config.translationY += 3
-  }
+  // else if (event.code === 'ArrowUp')  {
+  //   config.translationY += 3
+  // }
 
-  else if (event.code === 'ArrowDown')  {
-    config.translationY -= 3
+  // else if (event.code === 'ArrowDown')  {
+  //   config.translationY -= 3
 
-  }
+  //}
   else if (event.code === 'Space') {
     if (shootList.length > 2) return 
 
-    const sound = new Audio("/src/sounds/tiro.mp3 ");
+    const sound = new Audio("src/sounds/tiro.mp3 ");
 
     sound.autoplay = true
 
@@ -415,8 +415,6 @@ const checkIfEnemyShotBarriers = (enemyShootTranslationX, enemyShootTranslationY
       
       barrierList[indexBarriers].hp-=10
 
-      console.log('Acertou a barreira')
-
       if (barrierList[indexBarriers].hp <= 0) {
         const newBarriers= sceneDescription.children[3].children.filter(item => item.id !== barrierList[indexBarriers].id)
 
@@ -454,7 +452,7 @@ const checkIfEnemyShotPlayer = (enemyShootTranslationX, enemyShootTranslationY, 
 
       gameover = true
 
-      const audio = new Audio("/src/sounds/morte.mp3");
+      const audio = new Audio("src/sounds/morte.mp3");
 
       audio.volume = 0.2
     
@@ -468,7 +466,6 @@ const checkIfEnemyShotPlayer = (enemyShootTranslationX, enemyShootTranslationY, 
 
 const checkIfEnemyMissedTheShot = enemyShootTranslationY => {
   if (enemyShootTranslationY < -30) {
-    console.log('Tiro vazou')
 
     sceneDescription.children[4].children.shift()
 

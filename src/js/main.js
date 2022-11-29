@@ -129,6 +129,7 @@ function makeNode(nodeDescription) {
 const makeNodes = nodeDescriptions => nodeDescriptions ? nodeDescriptions.map(makeNode) : []
 
 function main(option = 0) {
+
   const initialize = initializeWebgl(option)
 
   const keyboardListener = document.querySelector('body')
@@ -201,6 +202,8 @@ function main(option = 0) {
 
   let isFirstTime = true
 
+  let startTime = true
+
   var tempo = 0
 
   function drawScene(now) {
@@ -270,16 +273,16 @@ function main(option = 0) {
         computeMatrix(nodeInfosByName[selectedObject], config)
       } else {
         end = true
-        alert(`Você Ganhou, ${pontos}`)
+        alert(`Você Ganhou, fez ${pontos} pontos`)
         window.location.reload();
       }
     } else {
-      if (isFirstTime) {
+      if (startTime) {
         tempo = now + 5
 
-        isFirstTime = false
+        startTime = false
 
-        selectedEffect= getRandomInt(3)
+        selectedEffect = getRandomInt(3)
       }
 
       if (now >= tempo) {
@@ -287,7 +290,6 @@ function main(option = 0) {
         alert(`Você Morreu, fez ${pontos} pontos`)
         window.location.reload();
       } else {
-
         nodeInfosByName['Center of the world'].trs.rotation[selectedEffect] = now;
       }
     }
