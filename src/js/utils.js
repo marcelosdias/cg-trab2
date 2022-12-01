@@ -144,11 +144,11 @@ const mapMoviments = (event) => {
   }
 
   if (event.code === 'ArrowRight') {
-    if (config.translationX <= 32) 
+    if (config.translationX <= 28) 
       config.translationX += speedMoviment * 110
   }
   else if (event.code === 'ArrowLeft') {
-    if (config.translationX >= -32) 
+    if (config.translationX >= -28) 
       config.translationX -= speedMoviment * 110
   }
   // else if (event.code === 'ArrowUp')  {
@@ -251,7 +251,7 @@ const createBarries = sceneDescription => {
 const enemiesAnimation = velocity => {
   for (let i = 0; i < enemyList.length; i++) {
     if (direction == 0) {
-      if (enemyList[9].trs.translation[0] > 36) {
+      if (enemyList[9].trs.translation[0] > 30) {
         direction = 1
 
         for (let j = 10; j < enemyList.length; j++) 
@@ -265,7 +265,7 @@ const enemiesAnimation = velocity => {
         enemyList[i].trs.translation[0] += velocity
       }
     } else {
-      if (enemyList[0].trs.translation[0] < -36) {
+      if (enemyList[0].trs.translation[0] < -30) {
         direction = 0
 
         for (let j = 1; j < enemyList.length; j++) 

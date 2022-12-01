@@ -3,9 +3,39 @@
 body {
   margin: 0;
 }
-canvas {
 
+.container {
+  position: relative;
+}
+
+.container canvas {
+  position: absolute;
+  
   width: 100vw;
   height: 100vh;
   display: block;
+}
+
+.container h1.name {
+  color: #fff;
+  position: absolute;
+  font-size: 14px;
+  left: 10px;
+  top: 580px;
+}
+
+.container h1.email {
+  color: #fff;
+  position: absolute;
+  font-size: 14px;
+  left: 10px;
+  top: 600px;
+}
+
+.container a.github {
+  color: #fff;
+  position: absolute;
+  font-size: 14px;
+  left: 10px;
+  top: 630px;
 }
