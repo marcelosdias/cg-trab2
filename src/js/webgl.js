@@ -149,7 +149,7 @@ void main() {
 
   specular3 = pow(dot(normal, halfVector3), u_shininess);
 
-  specular4 = pow(dot(normal, halfVector3), u_shininess);
+  specular4 = pow(dot(normal, halfVector4), u_shininess);
 
   if (light > 0.0) {
     color = light * u_lightColor;
@@ -168,7 +168,7 @@ void main() {
 
   if (light4 > 0.0) {
     color4 = light4 * u_lightColor4;
-    spec4 = specular4 * u_specularColor3;
+    spec4 = specular4 * u_specularColor4;
   }
   
   outColor = u_color;

@@ -1,48 +1,50 @@
-var programInfo
-var scene
+let programInfo
+let scene
 
-var objectsToDraw = []
-var objects = []
-var nodeInfosByName = {}
-var shootList = []
-var enemyList = []
-var barrierList = []
+let objectsToDraw = []
+let objects = []
+let nodeInfosByName = {}
+let shootList = []
+let enemyList = []
+let barrierList = []
 
-var sceneDescription
+let sceneDescription
 
 let indexEnemy = 0
 
-var arrayCube = {}
+let arrayCube = {}
 
 let direction = 0
 
+let animaTionRotation = 0
+
 let shooting = false
 
-var isEnemyShooting = false
-var selectedEnemy = 0
-var enemyShootList = []
+let isEnemyShooting = false
+let selectedEnemy = 0
+let enemyShootList = []
 
-var firstTime = true
+let firstTime = true
 
-var fps = false
+let fps = false
 
-var projectileAlive = [false, false, false]
+let projectileAlive = [false, false, false]
 
-var enemyKilled = 0
+let enemyKilled = 0
 
-var gameover = false
+let gameover = false
 
-var pontos = 0
+let pontos = 0
 
-var shootlength = 0
+let shootlength = 0
 
-var end = false
+let end = false
 
-var selectedEffect = 0
+let selectedEffect = 0
 
-var speedMoviment = 0
+let speedMoviment = 0
 
-var deltaTime
+let deltaTime
 let arrayCameras = [
   new Camera([0, 0, 120], [0, 0, 0], [0, 1, 0]),
   new Camera([0, -22.5, 79.5], [0, 14.5, 80], [0, 1, 0]),
@@ -155,7 +157,7 @@ function main(option = 0) {
             {
               name: "spaceship",
               draw: true,
-              translation: [0, -14.5, 80],
+              translation: [0, -21, 80],
               rotation: [degToRad(0), degToRad(0), degToRad(0)],
               format: {...arrayCube},
               children: [],
@@ -194,17 +196,17 @@ function main(option = 0) {
   
   requestAnimationFrame(drawScene);
 
-  var then = 0;
+  let then = 0;
 
-  var animationTime = 0
+  let animationTime = 0
 
-  var shootSpeed = 0
+  let shootSpeed = 0
 
   let isFirstTime = true
 
   let startTime = true
 
-  var tempo = 0
+  let tempo = 0
 
   function drawScene(now) {
     now *= 0.001;
@@ -290,52 +292,62 @@ function main(option = 0) {
         alert(`Você Morreu, fez ${pontos} pontos`)
         window.location.reload();
       } else {
-        nodeInfosByName['Center of the world'].trs.rotation[selectedEffect] = now;
+        animaTionRotation += 1
+        nodeInfosByName['Center of the world'].trs.rotation[selectedEffect] = degToRad(animaTionRotation);
       }
     }
 
     if (!end) {
       const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
-      const projectionMatrix = m4.perspective(fieldOfViewRadians, aspect, 1, 200);
+      const projectionMatrix = m4.perspective(fieldOfViewRadians, aspect, 1, 300);
 
       const viewProjectionMatrix = m4.multiply(projectionMatrix, arrayCameras[indexCamera].computeMatrix()); 
-
 
       scene.updateWorldMatrix();
 
       objects.forEach(object => {
           object.drawInfo.uniforms.u_lightColor = [0.5, 0.5, 0.5];
-          object.drawInfo.uniforms.u_specularColor = [0, 0, 0]; 
+          object.drawInfo.uniforms.u_specularColor = [0.2, 0.2, 0.2]; 
 
           if (projectileAlive[0]) {
             object.drawInfo.uniforms.u_lightWorldPosition2 = [shootList[0].trs.translation[0],shootList[0].trs.translation[1],shootList[0].trs.translation[2] + 5];
-            object.drawInfo.uniforms.u_lightColor2 = [1, 0, 0];
-            object.drawInfo.uniforms.u_specularColor2 = [0.5, 0, 0];
+            object.drawInfo.uniforms.u_lightColor2 = [0, 0, 1];
+            object.drawInfo.uniforms.u_specularColor2 = [0, 0, 0];
           } else {
               object.drawInfo.uniforms.u_lightWorldPosition2 = [0,0,0]
               object.drawInfo.uniforms.u_lightColor2 = [0,0,0];
               object.drawInfo.uniforms.u_specularColor2 = [0, 0, 0];
           }
 
-          if (projectileAlive[1]) {
-            object.drawInfo.uniforms.u_lightWorldPosition3 = [shootList[1].trs.translation[0], shootList[1].trs.translation[1], shootList[1].trs.translation[2] + 5];
-            object.drawInfo.uniforms.u_lightColor3 = [0, 1, 0];
-            object.drawInfo.uniforms.u_specularColor3 = [0, 1 ,0];
+          if (enemyShootList.length > 0) {
+            object.drawInfo.uniforms.u_lightWorldPosition3 = [enemyShootList[0].trs.translation[0], enemyShootList[0].trs.translation[1], enemyShootList[0].trs.translation[2] + 20];
+            object.drawInfo.uniforms.u_lightColor3 = [1, 0, 0];
+            object.drawInfo.uniforms.u_specularColor3 = [0, 0 ,0];
           }  else {
             object.drawInfo.uniforms.u_lightWorldPosition3 = [0, 0, 0]
             object.drawInfo.uniforms.u_lightColor3 = [0, 0, 0];
             object.drawInfo.uniforms.u_specularColor3 = [0, 0, 0];
           }
 
-          if (projectileAlive[2]) {
-            object.drawInfo.uniforms.u_lightWorldPosition4 = [shootList[2].trs.translation[0], shootList[2].trs.translation[1], shootList[2].trs.translation[2] + 5];
-            object.drawInfo.uniforms.u_lightColor4 = [0, 0, 1];
-            object.drawInfo.uniforms.u_specularColor4 = [0, 0, 1];
-          }  else {
-            object.drawInfo.uniforms.u_lightWorldPosition4 = [0, 0, 0]
-            object.drawInfo.uniforms.u_lightColor4 = [0, 0, 0];
-            object.drawInfo.uniforms.u_specularColor4 = [0, 0, 0];
-          }
+          // if (projectileAlive[1]) {
+          //   object.drawInfo.uniforms.u_lightWorldPosition3 = [shootList[1].trs.translation[0], shootList[1].trs.translation[1], shootList[1].trs.translation[2] + 5];
+          //   object.drawInfo.uniforms.u_lightColor3 = [0, 1, 0];
+          //   object.drawInfo.uniforms.u_specularColor3 = [0, 1 ,0];
+          // }  else {
+          //   object.drawInfo.uniforms.u_lightWorldPosition3 = [0, 0, 0]
+          //   object.drawInfo.uniforms.u_lightColor3 = [0, 0, 0];
+          //   object.drawInfo.uniforms.u_specularColor3 = [0, 0, 0];
+          // }
+
+          // if (projectileAlive[2]) {
+          //   object.drawInfo.uniforms.u_lightWorldPosition4 = [shootList[2].trs.translation[0], shootList[2].trs.translation[1], shootList[2].trs.translation[2] + 5];
+          //   object.drawInfo.uniforms.u_lightColor4 = [1, 0, 0];
+          //   object.drawInfo.uniforms.u_specularColor4 = [0, 0, 0];
+          // }  else {
+          //   object.drawInfo.uniforms.u_lightWorldPosition4 = [0, 0, 0]
+          //   object.drawInfo.uniforms.u_lightColor4 = [0, 0, 0];
+          //   object.drawInfo.uniforms.u_specularColor4 = [0, 0, 0];
+          // }
 
           object.drawInfo.uniforms.u_matrix = m4.multiply(viewProjectionMatrix, object.worldMatrix);
 

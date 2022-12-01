@@ -24,7 +24,7 @@ const calculateNormal = (position, indices) => {
       faces.push([indices[i], indices[i+1],indices[i+2]])
   }
 
-  var normalUsadas = {}
+  let normalUsadas = {}
 
   for (let i = 0, j = 0; i < position.length; i+=3, j++) {
       normalUsadas[j] = []
@@ -117,6 +117,9 @@ const updateScene = () => {
     return item
   })
 
+  sceneDescription.children[0].children[0].translation = [...nodeInfosByName[selectedObject].trs.translation]
+
+  console.log(sceneDescription.children[0].children[0].translation)
   sceneDescription.children = [...updatedValues]
 
   objectsToDraw = [];
@@ -141,11 +144,11 @@ const mapMoviments = (event) => {
   }
 
   if (event.code === 'ArrowRight') {
-    if (config.translationX <= 32)
+    if (config.translationX <= 32) 
       config.translationX += speedMoviment * 110
   }
   else if (event.code === 'ArrowLeft') {
-    if (config.translationX >= -32)
+    if (config.translationX >= -32) 
       config.translationX -= speedMoviment * 110
   }
   // else if (event.code === 'ArrowUp')  {
@@ -448,6 +451,7 @@ const checkIfEnemyShotPlayer = (enemyShootTranslationX, enemyShootTranslationY, 
         enemyShootTranslationX > (playerTranslationX - 1.2)
       )
     ) {
+
       collision = true
 
       gameover = true

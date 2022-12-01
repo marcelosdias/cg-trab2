@@ -1,6 +1,6 @@
-var index = 0
+let index = 0
 
-var selectedObject = 'spaceship'
+let selectedObject = 'spaceship'
 
 let indexCamera = 0
 
@@ -157,7 +157,7 @@ const config = {
   },
 }
 
-var settings = {
+let settings = {
   fps: false,
   actualStateEdit: false,
   actualStateTriangleEdit: false,
@@ -169,9 +169,9 @@ var settings = {
 
 };
 
-var gui = null
+let gui = null
 
-var listOfObjects = ['spaceship']
+let listOfObjects = ['spaceship']
 
 const loadGUI = () => {
   gui = new dat.GUI({closeFolders: false}); 
